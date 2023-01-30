@@ -39,6 +39,7 @@ setTimeout(() => {
   );
 }, 1000 * 6);  // 6 seconds
 */
+/*
 import { fromEvent, Observable } from 'rxjs';
 
 
@@ -49,6 +50,30 @@ setTimeout(() => {
     (x: any) => addItem(x)
   );
 }, 1000 * 2);  // 2 seconds
+*/
+import { Subject } from 'rxjs';
+
+
+const subject = new Subject();
+
+subject.subscribe(
+  (data: any) => addItem('Observer 1: ' + data),
+  (err: any) => addItem(err),
+  () => addItem('Observer 1 completed')
+);
+
+subject.next('The first thing has been sent');
+
+const observer2 = subject.subscribe(
+  (data: any) => addItem('Observer 2: ' + data)
+);
+
+subject.next('The second thing has been sent');
+subject.next('A third thing has been sent');
+
+observer2.unsubscribe();
+
+subject.next('A final thing has been sent');
 
 function addItem(val: any) {
   const node = document.createElement('li');
