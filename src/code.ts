@@ -51,10 +51,17 @@ setTimeout(() => {
   );
 }, 1000 * 2);  // 2 seconds
 */
-import { Subject } from 'rxjs';
+// import { Subject } from 'rxjs';
+// import { BehaviorSubject } from 'rxjs';
+// import { ReplaySubject } from 'rxjs';
+import { AsyncSubject } from 'rxjs';
 
 
-const subject = new Subject();
+// const subject = new Subject();
+// const subject = new BehaviorSubject('First');
+// const subject = new ReplaySubject(2);
+// const subject = new ReplaySubject(30, 500);
+const subject = new AsyncSubject();
 
 subject.subscribe(
   (data: any) => addItem('Observer 1: ' + data),
@@ -62,18 +69,26 @@ subject.subscribe(
   () => addItem('Observer 1 completed')
 );
 
-subject.next('The first thing has been sent');
+var i = 1;
+var int = setInterval(() => subject.next(i++), 100);
 
-const observer2 = subject.subscribe(
-  (data: any) => addItem('Observer 2: ' + data)
-);
+/* subject.next('The first thing has been sent');
+subject.next('Another thing has been sent');
+subject.next('...Observer 2 is about to subscribe...'); */
 
-subject.next('The second thing has been sent');
+setTimeout(() => {
+  const observer2 = subject.subscribe(
+    (data: any) => addItem('Observer 2: ' + data)
+  );
+  subject.complete();
+}, 500);
+
+/* subject.next('The second thing has been sent');
 subject.next('A third thing has been sent');
 
 observer2.unsubscribe();
 
-subject.next('A final thing has been sent');
+subject.next('A final thing has been sent'); */
 
 function addItem(val: any) {
   const node = document.createElement('li');
