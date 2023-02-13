@@ -110,7 +110,6 @@ const newObs = merge(observable, observable2);
 
 newObs.subscribe((x: any) => addItem(x)); */
 
-
 // Observable.create((observer: any) => {
 //   observer.next('Hey guys!');
 // })
